@@ -118,8 +118,8 @@ public class FamilyTree
 
 		// Parse the input file. Create a FileReader that reads treeFile. Create a BufferedReader
 		// that reads from the FileReader.
-		FileReader fr = ???
-		BufferedReader br = ???
+		FileReader fr = new FileReader(treeFile);
+		BufferedReader br = new BufferedReader(fr);
 		String line;
 		while ((line = br.readLine()) != null)
 			addLine(line);
@@ -149,13 +149,16 @@ public class FamilyTree
 			parentNode = root = new TreeNode(parent);
 		else
 		{
-			parentNode = root.?????  There's a method in Node that searches for a named node. 
-			??? If the parent node wasn't found, there must have been something wrong in the 
-				data file. Throw an exception.
+		parentNode = root.getNodeWithName(parent);
+				if (parentNode==null)
+					throw new TreeException("parent not found");
 		}
 		
-		// Add child nodes to parentNode.
-		?? For each name in childrenArray, create a new node and add that node to parentNode.
+		for (String child: childrenArray) {
+			TreeNode newNode=new TreeNode(child);
+			parentNode.addChild(newNode);
+		}
+
 	}
 	
 	
@@ -168,12 +171,12 @@ public class FamilyTree
 	TreeNode getMostRecentCommonAncestor(String name1, String name2) throws TreeException
 	{
 		// Get nodes for input names.
-		TreeNode node1 = root.name1		// node whose name is name1
+		TreeNode node1 = root.getNodeWithName(name1);	// node whose name is name1
 		if (node1 == null)
 			throw new TreeException("node1 is null");
 			// Throw a TreeException with a useful message
 			
-		TreeNode node2 = root.name2		// node whose name is name2
+		TreeNode node2 = root.getNodeWithName(name2);		// node whose name is name2
 		if (node2 == null)
 			throw new TreeException("node2 is null");
 		// Throw TreeException with a useful message
